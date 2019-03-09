@@ -7,7 +7,8 @@ class App extends Component {
   
 constructor(props){
     super(props);
-    
+
+    this.clearItems();
     this.getRealmsAll();
     this.getItems();
 
@@ -16,7 +17,6 @@ constructor(props){
       activated: "false",
       refreshTimer: 360000,
     }
-
 }
 
   componentDidMount(){
@@ -27,10 +27,20 @@ constructor(props){
       );
   }
 
+  clearItems = async () => {
+    console.log("clearItems request");
+    await axios.post('https://wowstatsjava.herokuapp.com/api/items/clear')
+      .then(res => {
+          console.log("clearItems finished");
+        });
+}
+
+
   getItems = async () => {
-      console.log("getItems");
+      console.log("getItems request");
       await axios.post('https://wowstatsjava.herokuapp.com/api/items/all')
         .then(res => {
+            console.log("getItems finished");
             console.log(res.data);
             var listItems = res.data;
             this.setState({ activated:"true", items:listItems});
@@ -38,16 +48,18 @@ constructor(props){
   }
 
    getRealmsAll = async () => {
+    console.log("getItems getRealmsAll");
     await axios.post('https://wowstatsjava.herokuapp.com/api/realm/all')
         .then(res => {
-            console.log("getRealmsAll");
+            console.log("getRealmsAll finished");
           });
   }
 
   getRealmsLeft = async () => {
+    console.log("getItems getRealmsLeft");
     await axios.post('https://wowstatsjava.herokuapp.com/api/realm/left')
       .then(res => {
-          console.log("getRealmsLeft");
+          console.log("getRealmsLeft finished");
           this.getItems();
         });
   }
